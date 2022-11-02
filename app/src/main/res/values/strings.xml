@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">Family Planning</string>
+    <string name="family_planning">Family Planning</string>
+    <string name="welcome_image">welcome image</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="sign_in_for_free">Sign in for free to get Started!</string>
+    <string name="email_icon">Email icon</string>
+    <string name="type_your_email">Type your Email</string>
+    <string name="email">Email Address</string>
+    <string name="password">****************</string>
+    <string name="labelPassword">Password</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forget_password">Forget Password ?</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="don_t_you_have_an_account">Don\'t you have an account ?</string>
+    <string name="create_account">Create Account</string>
+    <string name="or">OR</string>
+    <string name="Linkedin">Linkedin</string>
+    <string name="facebook">facebook</string>
+    <string name="google">google</string>
+    <string name="getmoreinfo">Get More Information About FP</string>
+    <string name="getstarted">Get Started</string>
+    <string name="more_info">
+        Between 2005 and 2020, total contraceptive
+        use among married women in Rwanda increased from 17% to 64%.
+        Information received through these channels generated interpersonal
+        about contraceptives through both conversation and observation
+        however and misinformation remained a significant barrier to use.
+        </string>
+    <string name="back_image">back ward</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="sign_up_for_free_to_get_started">Sign up for free to get started</string>
+    <string name="user_icon">user icon</string>
+    <string name="full">Full Name</string>
+    <string name="type_your_full_name">Type your full name</string>
+    <string name="hintphone">07[2,3,8,9]xxxxxx</string>
+    <string name="Tell">Telephone</string>
+    <string name="idnumber">National Identity Number</string>
+    <string name="nid">NID</string>
+    <string name="labelcfPassword">Confirm Password</string>
+    <string name="you_agree_terms_">By submiting, you agree terms and conditions</string>
+    <string name="create_acc">Create Account</string>
+    <string name="sign_in1">Sign in</string>
+    <string name="already_have_an_account">Already have an account ?</string>
+    <string name="recycle_image">Recycle image</string>
+    <string name="fp_sample_text">Family planning demand generation in Rwanda</string>
+    <string name="image_arrow">Image Arrow</string>
+    <string name="search_query">search your query or method</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_open">open</string>
+    <string name="menu_close">close</string>
+    <string name="what_are_the_way">What are the way of family planning are you looking for?</string>
+    <string name="popular_methods">Popular Methods</string>
+    <string name="contraceptive">Contraceptive pills</string>
+    <string name="works">Usage / How it works ?</string>
+    <string name="usagedesc">
+        To create a custom function, we type the function
+        keyword followed by a name for the function,
+        followed by opening and closing parentheses,
+        by opening and closing curly brackets.
+    </string>
+    <string name="texthint">Please check to continue</string>
+    <string name="continues">CONTINUE</string>
+    <string name="profile">My Account Profile</string>
+    <string name="update">Update your Account</string>
+    <string name="logout">Logout</string>
+    <string name="notification_body">This my notification body This my notification body This my notification body</string>
+    <string name="password_reset_it">If you don\'t remember your password, reset it</string>
+    <string name="reset_password">Reset password</string>
+    <string name="todo">TODO</string>
+    <string name="disadvantages">Disadvantages</string>
+    <string name="method_period">Method period:</string>
+    <string name="gt">The major caveat here is that older versions of Internet Explorer that have JavaScript disabled or unavailable will receive unstyled elements.</string>
+    <string name="help_center">You already have method you are using,if you want change go the nearest healthy center</string>
+    <string name="nearest_center">Thank your for choosing go to nearest healthy center for confirming</string>
+    <string name="menonly">permanent method is belonging to men only,please choose another method,Thank you for using our app</string>
+    <string name="show">your information have been update</string>
+    <string name="type_password">Type New Password</string>
+</resources>

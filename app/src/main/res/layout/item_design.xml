@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linear1"
+    android:layout_marginTop="5sp"
+    android:layout_marginStart="10sp"
+    android:layout_marginEnd="10sp"
+    android:layout_marginBottom="0sp"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/imgNotify"
+        android:layout_width="80sp"
+        android:layout_height="80sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="10sp"
+        android:clickable="true"
+        android:contentDescription="@string/recycle_image"
+        android:focusable="true"
+        android:src="@drawable/agapira"
+        app:roundPercent="1" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10sp"
+        android:layout_toEndOf="@id/imgNotify"
+        android:text="Method name"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView1"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="10sp"
+        android:layout_marginBottom="10sp"
+        android:layout_toEndOf="@id/imgNotify"
+        android:maxLines="2"
+        android:text="@string/gt"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="normal" />
+
+    </RelativeLayout>
