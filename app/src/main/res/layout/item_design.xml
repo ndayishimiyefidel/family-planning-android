@@ -6,21 +6,18 @@
     android:layout_marginTop="5sp"
     android:layout_marginStart="10sp"
     android:layout_marginEnd="10sp"
-    android:layout_marginBottom="0sp"
-
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginBottom="0sp">
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/imgNotify"
-        android:layout_width="80sp"
-        android:layout_height="80sp"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
         android:layout_marginTop="5sp"
         android:layout_marginEnd="10sp"
         android:clickable="true"
         android:contentDescription="@string/recycle_image"
         android:focusable="true"
-        android:src="@drawable/agapira"
-        app:roundPercent="1" />
+        android:src="@drawable/agapira" />
 
     <TextView
         android:id="@+id/textView1"

@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class NotificationsFragment extends Fragment {
 private TextView textP,textC,txtdValue,textEnddate,textremValue,Overdue;
@@ -67,10 +68,10 @@ private String UserId;
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                if (snapshot.exists()) {
                 SelectMethod method=snapshot.getValue(SelectMethod.class);
 //                assert method != null;
-                String methodname=method.getUfpmethod();
+                    String methodname= Objects.requireNonNull(method).getUfpmethod();
                     String period=method.getDuration();
                     String startdate=method.getUstartdate();
                     String enddate= method.getUenddate();
@@ -102,6 +103,10 @@ private String UserId;
                 }
                 else{
                     Overdue.setText("Go to nearest health center to confirm your method!Thank you for using our app");
+                }
+                }
+                else{
+                    Overdue.setText("No method selected!Please go to method menu to choose it.Thank you");
                 }
             }
 

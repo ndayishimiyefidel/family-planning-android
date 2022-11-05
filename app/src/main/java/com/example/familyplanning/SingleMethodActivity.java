@@ -99,6 +99,15 @@ public class SingleMethodActivity extends AppCompatActivity {
             reff= FirebaseDatabase.getInstance().getReference("UserAccounts");
             reff.keepSynced(true);
             currentUserId=user.getUid();
+            String st="Active";
+            String searchKey=currentUserId+" "+st;
+
+            System.out.println("search key:"+searchKey);
+            String[] str=searchKey.split(" ");
+            String searchKey1=str[0];
+            String searchKey2=str[1];
+            System.out.println("search key1:"+searchKey1);
+            System.out.println("search key2:"+searchKey2);
             reff.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,52 +121,24 @@ public class SingleMethodActivity extends AppCompatActivity {
                          gender=userProfile.getGender();
                          token=userProfile.getToken();
                     }
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
-
-
-
             btnContinue.setOnClickListener(view -> {
                 //check whether user is male or female
                 if(gender.equals("Male") && mPeriod.equals("Permanent")){
-
                     reff = FirebaseDatabase.getInstance().getReference().child("Members");
                     reff.keepSynced(true);
-                    reff.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    reff.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-
-                                    NotificationChannel channel=new NotificationChannel("n","n", NotificationManager.IMPORTANCE_DEFAULT);
-                                    NotificationManager manager=getSystemService(NotificationManager.class);
-                                    manager.createNotificationChannel(channel);
-                                }
-                                NotificationCompat.Builder builder=new NotificationCompat.Builder(SingleMethodActivity.this,"n")
-                                        .setContentText("family planning")
-                                        .setSmallIcon(R.drawable.ic_notifications)
-                                        .setAutoCancel(true)
-                                        .setContentText(getString(R.string.help_center));
-                                NotificationManagerCompat managerCompat=NotificationManagerCompat.from(SingleMethodActivity.this);
-                                managerCompat.notify(999,builder.build());
-                                Toast.makeText(SingleMethodActivity.this, new StringBuilder().append(getString(R.string.help_center)), Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
-
-                            } else {
-                                reff = FirebaseDatabase.getInstance().getReference("Members");
-                                reff.keepSynced(true);
-
-                                SelectMethod member = new SelectMethod(name,email,nid,phone,mName,"","",mPeriod,"Pending",token);
-                                reff.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(member).addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-
-
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot DataSnapshot1 :snapshot.getChildren()){
+                                if(DataSnapshot1.child("uid").exists()&&DataSnapshot1.child("status").exists()){
+                                    if(DataSnapshot1.child("uid").getValue().toString().equals(searchKey1)&&DataSnapshot1.child("status").getValue().toString().equals(searchKey2)) {
+                                        //Do What You Want To Do.
                                         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
 
                                             NotificationChannel channel=new NotificationChannel("n","n", NotificationManager.IMPORTANCE_DEFAULT);
@@ -168,25 +149,54 @@ public class SingleMethodActivity extends AppCompatActivity {
                                                 .setContentText("family planning")
                                                 .setSmallIcon(R.drawable.ic_notifications)
                                                 .setAutoCancel(true)
-                                                .setContentText("Thank your for choosing  go to nearest healthy center for confirming");
+                                                .setContentText(getString(R.string.help_center));
                                         NotificationManagerCompat managerCompat=NotificationManagerCompat.from(SingleMethodActivity.this);
                                         managerCompat.notify(999,builder.build());
-                                        Toast.makeText(SingleMethodActivity.this, new StringBuilder().append("Thank you for choosing"), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SingleMethodActivity.this, new StringBuilder().append(getString(R.string.help_center)), Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
 
-
-
-                                    } else {
-
-                                        Toast.makeText(SingleMethodActivity.this, new StringBuilder().append("Whoops,Error while To choose method "), Toast.LENGTH_LONG).show();
                                     }
-                                });
+                                    else{
+                                        //choose method
+                                        reff = FirebaseDatabase.getInstance().getReference("Members");
+                                        reff.keepSynced(true);
 
+                                        SelectMethod member = new SelectMethod(name,email,nid,phone,mName,"","",mPeriod,"Pending",token);
+                                        reff.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(member).addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+
+
+                                                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+
+                                                    NotificationChannel channel=new NotificationChannel("n","n", NotificationManager.IMPORTANCE_DEFAULT);
+                                                    NotificationManager manager=getSystemService(NotificationManager.class);
+                                                    manager.createNotificationChannel(channel);
+                                                }
+                                                NotificationCompat.Builder builder=new NotificationCompat.Builder(SingleMethodActivity.this,"n")
+                                                        .setContentText("family planning")
+                                                        .setSmallIcon(R.drawable.ic_notifications)
+                                                        .setAutoCancel(true)
+                                                        .setContentText("Thank your for choosing  go to nearest healthy center for confirming");
+                                                NotificationManagerCompat managerCompat=NotificationManagerCompat.from(SingleMethodActivity.this);
+                                                managerCompat.notify(999,builder.build());
+                                                Toast.makeText(SingleMethodActivity.this, new StringBuilder().append("Thank you for choosing"), Toast.LENGTH_LONG).show();
+                                                startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+
+
+
+                                            } else {
+
+                                                Toast.makeText(SingleMethodActivity.this, new StringBuilder().append("Whoops,Error while To choose method "), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                }
                             }
-
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
+
                         }
                     });
                 }

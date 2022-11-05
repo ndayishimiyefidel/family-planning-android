@@ -1,15 +1,15 @@
 package com.example.familyplanning;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,6 +95,7 @@ public class Fp_methods extends AppCompatActivity implements selectListener{
         recycleView=findViewById(R.id.recycleView);
         layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setReverseLayout(true);
         recycleView.setLayoutManager(layoutManager);
         adapter=new Adapter(methodList,this);
         recycleView.setAdapter(adapter);

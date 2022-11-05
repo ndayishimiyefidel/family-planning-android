@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fp_methods">
-
     <ImageView
         android:id="@+id/backImg"
         android:layout_width="30sp"
         android:layout_height="30sp"
         android:layout_gravity="start"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/back_image"
         android:src="@drawable/ic_backspace_arrow"
@@ -20,31 +19,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black" />
-
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f3f3f3"
         android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/backImg"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/backImg"
         app:layout_constraintTop_toBottomOf="@+id/backImg"
         android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16sp"
-            android:layout_marginBottom="8sp"
-            android:orientation="vertical"
-            android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/searchField"
-            app:layout_constraintStart_toStartOf="@+id/searchField"
-            app:layout_constraintTop_toBottomOf="@+id/searchField"
-            app:layout_constraintVertical_bias="0.042" />
+        android:layout_marginEnd="10sp"
+        android:layout_marginTop="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
+        android:layout_weight="1"
+        android:divider="#FFCC00"
+        android:dividerHeight="4dp"
+        android:layout_marginBottom="32sp"
+        app:layout_constraintEnd_toEndOf="@+id/searchField"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchField"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

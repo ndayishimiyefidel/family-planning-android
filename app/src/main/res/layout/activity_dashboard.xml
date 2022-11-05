@@ -47,7 +47,7 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginBottom="10sp"
+        android:layout_marginBottom="5sp"
         android:background="@drawable/rounded_corner"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

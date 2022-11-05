@@ -144,7 +144,7 @@ public class activity_signup extends AppCompatActivity {
 
                 return;
             }
-            if(fuln.matches(flnReg)){
+            if(!fuln.matches(flnReg)){
                 fullName.setError("Names should not contain only letter!");
                 fullName.requestFocus();
                 return;
