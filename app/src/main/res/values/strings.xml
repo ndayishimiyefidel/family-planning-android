@@ -77,4 +77,12 @@
     <string name="menonly">permanent method is belonging to men only,please choose another method,Thank you for using our app</string>
     <string name="show">your information have been update</string>
     <string name="type_password">Type New Password</string>
+    <string name="sector">Type your sector...</string>
+    <string name="your_sector">Your Sector</string>
+    <string name="cell">Type your Cell...</string>
+    <string name="your_cell">Your Cell</string>
+    <string name="your_information">Feel free to edit your information</string>
+    <string name="new_password">New Password</string>
+    <string name="condition">By checking,you are terms and condition</string>
+
 </resources>

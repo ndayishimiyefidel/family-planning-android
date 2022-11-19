@@ -195,7 +195,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="76dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:text=""
         android:textColor="#ff1a1a"
         android:textSize="18sp"

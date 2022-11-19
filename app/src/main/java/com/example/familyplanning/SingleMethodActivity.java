@@ -3,6 +3,7 @@ package com.example.familyplanning;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,13 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class SingleMethodActivity extends AppCompatActivity {
-    private TextView textTitle;
-    private TextView textUsageDesc,textP,textC,textAdvDesc,textDisadvDesc;
-    private CheckBox checkBox;
-    private ImageView imageView;
     private Button btnContinue;
-    private ImageView backImg;
     private FirebaseAuth userAuth;
     private DatabaseReference reff;
     private String currentUserId;
@@ -43,34 +42,35 @@ public class SingleMethodActivity extends AppCompatActivity {
     private  String phone;
     private String gender;
     private String token;
-    private String mCategory;
+    private String sector,cell,dob;
+    private  CheckBox checkBox;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_activity);
-        backImg=findViewById(R.id.backImg);
+        ImageView backImg = findViewById(R.id.backImg);
         //on back pressed
         backImg.setOnClickListener(view -> onBackPressed());
 
         //initializing data from previous activity
          mName=getIntent().getStringExtra("methodname");
-        mCategory=getIntent().getStringExtra("category");
+        String mCategory = getIntent().getStringExtra("category");
         mPeriod=getIntent().getStringExtra("period");
         String mAdvantages=getIntent().getStringExtra("advantages");
         String mDisadv=getIntent().getStringExtra("disadvantages");
         String mUsage=getIntent().getStringExtra("usage");
         String mImgurl=getIntent().getStringExtra("imgurl");
         //get find text from activity
-        textTitle=findViewById(R.id.textTitle);
-        textP=findViewById(R.id.textP);
-        textUsageDesc=findViewById(R.id.textUsageDesc);
-        textC=findViewById(R.id.textC);
-        textAdvDesc=findViewById(R.id.textAdvDesc);
-        textDisadvDesc=findViewById(R.id.textDisadvDesc);
-        checkBox=findViewById(R.id.checkBox);
-        imageView=findViewById(R.id.singleImg);
+        TextView textTitle = findViewById(R.id.textTitle);
+        TextView textP = findViewById(R.id.textP);
+        TextView textUsageDesc = findViewById(R.id.textUsageDesc);
+        TextView textC = findViewById(R.id.textC);
+        TextView textAdvDesc = findViewById(R.id.textAdvDesc);
+        TextView textDisadvDesc = findViewById(R.id.textDisadvDesc);
+        checkBox = findViewById(R.id.checkBox);
+        ImageView imageView = findViewById(R.id.singleImg);
         //finally, assign those value to text view
         textTitle.setText(mName);
         textUsageDesc.setText(mUsage);
@@ -88,14 +88,7 @@ public class SingleMethodActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user=userAuth.getCurrentUser();
 
-        if(user==null){
-            //
-            btnContinue.setOnClickListener(view -> {
-                startActivity(new Intent(getApplicationContext(), activity_login.class));
-
-            });
-        }
-        else{
+        if (user != null) {
             reff= FirebaseDatabase.getInstance().getReference("UserAccounts");
             reff.keepSynced(true);
             currentUserId=user.getUid();
@@ -115,9 +108,11 @@ public class SingleMethodActivity extends AppCompatActivity {
                     if(userProfile!=null){
                          name=userProfile.getFuln();
                          email=userProfile.getEmail();
-                         String dob=userProfile.getDob();
+                         dob=userProfile.getDob();
                          nid= userProfile.getIdno();
                          phone=userProfile.getIphone();
+                         sector=userProfile.getSector();
+                         cell=userProfile.getCell();
                          gender=userProfile.getGender();
                          token=userProfile.getToken();
                     }
@@ -129,6 +124,13 @@ public class SingleMethodActivity extends AppCompatActivity {
             });
             btnContinue.setOnClickListener(view -> {
                 //check whether user is male or female
+                System.out.println("your gender is "+gender);
+                if (!checkBox.isChecked()) {
+                    Snackbar snackbar = Snackbar.make(view, "Whoops,Error you must agree terms and conditions", Snackbar.LENGTH_LONG);
+                    snackbar.setBackgroundTint(Color.RED);
+                    snackbar.show();
+                    return;
+                }
                 if(gender.equals("Male") && mPeriod.equals("Permanent")){
                     reff = FirebaseDatabase.getInstance().getReference().child("Members");
                     reff.keepSynced(true);
@@ -137,7 +139,7 @@ public class SingleMethodActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot DataSnapshot1 :snapshot.getChildren()){
                                 if(DataSnapshot1.child("uid").exists()&&DataSnapshot1.child("status").exists()){
-                                    if(DataSnapshot1.child("uid").getValue().toString().equals(searchKey1)&&DataSnapshot1.child("status").getValue().toString().equals(searchKey2)) {
+                                    if(Objects.requireNonNull(DataSnapshot1.child("uid").getValue()).toString().equals(searchKey1)&& Objects.requireNonNull(DataSnapshot1.child("status").getValue()).toString().equals(searchKey2)) {
                                         //Do What You Want To Do.
                                         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
 
@@ -161,8 +163,8 @@ public class SingleMethodActivity extends AppCompatActivity {
                                         reff = FirebaseDatabase.getInstance().getReference("Members");
                                         reff.keepSynced(true);
 
-                                        SelectMethod member = new SelectMethod(name,email,nid,phone,mName,"","",mPeriod,"Pending",token);
-                                        reff.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(member).addOnCompleteListener(task1 -> {
+                                        SelectMethod member = new SelectMethod(name,email,nid,phone,mName,"","",mPeriod,"Pending",sector,cell,dob,token,gender);
+                                        reff.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(member).addOnCompleteListener(task1 -> {
                                             if (task1.isSuccessful()) {
 
 
@@ -227,8 +229,8 @@ public class SingleMethodActivity extends AppCompatActivity {
                                 reff = FirebaseDatabase.getInstance().getReference("Members");
                                 reff.keepSynced(true);
 
-                                SelectMethod member = new SelectMethod(name,email,nid,phone,mName,"","",mPeriod,"Pending",token);
-                                reff.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(member).addOnCompleteListener(task1 -> {
+                                SelectMethod member = new SelectMethod(name,email,nid,phone,mName,"","",mPeriod,"Pending",sector,cell,dob,token,gender);
+                                reff.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(member).addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
 
 
@@ -279,9 +281,14 @@ public class SingleMethodActivity extends AppCompatActivity {
                             .setContentText(getString(R.string.menonly));
                     NotificationManagerCompat managerCompat=NotificationManagerCompat.from(SingleMethodActivity.this);
                     managerCompat.notify(999,builder.build());
+                    startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+
                 }
 
             });
+        } else {
+            //
+            btnContinue.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), activity_login.class)));
         }
     }
 }

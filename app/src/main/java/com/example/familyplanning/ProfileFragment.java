@@ -1,23 +1,17 @@
 package com.example.familyplanning;
 
-import static android.app.ProgressDialog.show;
-
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,18 +23,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
-    private EditText fullName, textNumber,textPhone,Email,textPwd,textdob;
-    private CheckBox terms;
-    private RadioGroup radioGroup;
-    private Button btnUpdate;
+    private EditText fullName, textNumber,textPhone,Email,textPwd,textdob,textSector,textCell;
     private DatabaseReference reff;
-    private FirebaseUser userAuth;
     private String UserId;
     private RadioButton rbtnMale;
     private RadioButton rbtnFemale;
-    private String _NAME,_EMAIL,_GENDER,_NID,_PHONE,_DOB,_PASSWORD;
+    private String _NAME,_EMAIL,_GENDER,_NID,_PHONE,_DOB,_PASSWORD,_SECTOR,_CELL;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -59,13 +50,13 @@ public class ProfileFragment extends Fragment {
         textNumber=view.findViewById(R.id.textidNumber);
         textPhone=view.findViewById(R.id.textPhoneNumber);
         Email=view.findViewById(R.id.Email);
+        textSector=view.findViewById(R.id.textSector);
+        textCell=view.findViewById(R.id.textCell);
         textPwd=view.findViewById(R.id.textPassword);
         textdob=view.findViewById(R.id.textdob);
         rbtnMale=view.findViewById(R.id.rbtnMale);
         rbtnFemale=view.findViewById(R.id.rbtnFemale);
         System.out.println("gener:"+rbtnFemale);
-        //check box
-        terms=view.findViewById(R.id.terms);
         //date picker
         textdob.setOnClickListener(arg0 -> {
 
@@ -73,9 +64,9 @@ public class ProfileFragment extends Fragment {
             int yy = calendar.get(Calendar.YEAR);
             int mm = calendar.get(Calendar.MONTH);
             int dd = calendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePicker = new DatePickerDialog(getContext(), (DatePickerDialog.OnDateSetListener) (view1,year, monthOfYear, dayOfMonth) -> {
-                String date = String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear+1)
-                        + "-" + String.valueOf(year);
+            DatePickerDialog datePicker = new DatePickerDialog(getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
+                String date = dayOfMonth + "-" + (monthOfYear + 1)
+                        + "-" + year;
                 textdob.setText(date);
             }, yy, mm, dd);
             datePicker.show();
@@ -95,12 +86,12 @@ public class ProfileFragment extends Fragment {
 //            }
 //        });
         //get button
-        btnUpdate=view.findViewById(R.id.btnUpdate);
-        userAuth=FirebaseAuth.getInstance().getCurrentUser();
+        Button btnUpdate = view.findViewById(R.id.btnUpdate);
+        FirebaseUser userAuth = FirebaseAuth.getInstance().getCurrentUser();
 
         reff= FirebaseDatabase.getInstance().getReference("UserAccounts");
         reff.keepSynced(true);
-        UserId= userAuth.getUid();
+        UserId= Objects.requireNonNull(userAuth).getUid();
         //fetch and display profile information
         reff.child(UserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -114,6 +105,9 @@ public class ProfileFragment extends Fragment {
                     _PHONE=userProfile.getIphone();
                     _GENDER=userProfile.getGender();
                     _PASSWORD=userProfile.getPassword();
+                    _CELL=userProfile.getCell();
+                    _SECTOR=userProfile.getSector();
+                    System.out.println("your gender is "+_GENDER);
 
 
                     //set text to edit text
@@ -123,14 +117,17 @@ public class ProfileFragment extends Fragment {
                     Email.setText(_EMAIL);
                     textdob.setText(_DOB);
                     textPwd.setText(_PASSWORD);
+                    textSector.setText(_SECTOR);
+                    textCell.setText(_CELL);
                     //check which gender logged in
                     System.out.println("your gender is"+_GENDER);
                     if(_GENDER.equals("Male")){
                         rbtnMale.setChecked(true);
                     }
-                    else{
+                    else if(_GENDER.equals("Female")){
                         rbtnFemale.setChecked(true);
                     }
+
                 }
 
             }
@@ -142,7 +139,7 @@ public class ProfileFragment extends Fragment {
         });
         //update profile information
         btnUpdate.setOnClickListener(view1 -> {
-          if(isNameChanged()||isPasswordChanged()||isPhoneChanged()||isNidChanged()||isDobChanged()||isGenderChanged()){
+          if(isNameChanged()||isPasswordChanged()||isPhoneChanged()||isNidChanged()||isDobChanged()||isGenderChanged()||isSectorChanged()||isCellChanged()){
               Snackbar snackbar = Snackbar.make(view1, "Your profile information have been updated successfully!", Snackbar.LENGTH_LONG);
               snackbar.setBackgroundTint(Color.BLUE);
               snackbar.show();
@@ -155,13 +152,30 @@ public class ProfileFragment extends Fragment {
       });
         return view;
     }
-    private boolean isNidChanged() {
-        if(!_NID.equals(textNumber.getText().toString())){
-            reff.child(UserId).child("idno").setValue(textNumber.getText().toString());
+    private boolean isSectorChanged() {
+        if (_SECTOR.equals(textSector.getText().toString())) {
+            return false;
+        } else {
+            reff.child(UserId).child("sector").setValue(textSector.getText().toString());
             return  true;
         }
-        else{
+
+    }
+    private boolean isCellChanged() {
+        if (_CELL.equals(textCell.getText().toString())) {
             return false;
+        } else {
+            reff.child(UserId).child("cell").setValue(textCell.getText().toString().trim());
+            return  true;
+        }
+
+    }
+    private boolean isNidChanged() {
+        if (_NID.equals(textNumber.getText().toString())) {
+            return false;
+        } else {
+            reff.child(UserId).child("idno").setValue(textNumber.getText().toString());
+            return  true;
         }
 
     }

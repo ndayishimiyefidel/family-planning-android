@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Feel free to edit your information"
+            android:text="@string/your_information"
             android:textColor="@color/ColorSecondary"
             android:textStyle="bold"
             android:layout_marginTop="20sp"
@@ -368,6 +368,116 @@
             android:paddingStart="40sp"
             android:paddingEnd="30sp">
             <LinearLayout
+                android:id="@+id/layoutSector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40sp"
+                android:gravity="center_vertical"
+                android:background="@drawable/background_input"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="22sp"
+                    android:layout_height="22sp"
+                    android:layout_marginStart="10sp"
+                    android:contentDescription="@string/email_icon"
+                    android:src="@drawable/ic_location"
+                    app:tint="@color/teal_200"
+                    tools:ignore="ImageContrastCheck" />
+                <EditText
+                    android:id="@+id/textSector"
+                    android:layout_width="match_parent"
+                    android:layout_height="55sp"
+                    android:background="@null"
+                    android:hint="@string/sector"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:textSize="18sp"
+                    android:inputType="text"
+                    android:textStyle="normal"
+                    android:paddingEnd="10sp"
+                    android:paddingStart="10sp"
+                    />
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="41sp"
+                android:text="@string/your_sector"
+                android:textAllCaps="true"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/layoutSector"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layoutSector"
+                android:background="@color/white"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="30sp"
+            android:paddingEnd="30sp">
+            <LinearLayout
+                android:id="@+id/layoutCell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40sp"
+                android:gravity="center_vertical"
+                android:background="@drawable/background_input"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="22sp"
+                    android:layout_height="22sp"
+                    android:layout_marginStart="10sp"
+                    android:contentDescription="@string/email_icon"
+                    android:src="@drawable/ic_location"
+                    app:tint="@color/teal_200"
+                    tools:ignore="ImageContrastCheck" />
+                <EditText
+                    android:id="@+id/textCell"
+                    android:layout_width="match_parent"
+                    android:layout_height="55sp"
+                    android:background="@null"
+                    android:hint="@string/cell"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:textSize="18sp"
+                    android:inputType="text"
+                    android:textStyle="normal"
+                    android:paddingEnd="10sp"
+                    android:paddingStart="10sp"
+                    />
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="41sp"
+                android:text="@string/your_cell"
+                android:textAllCaps="true"
+                android:paddingEnd="6dp"
+                android:paddingStart="6dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/layoutCell"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layoutCell"
+                android:background="@color/white"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="40sp"
+            android:paddingEnd="30sp">
+            <LinearLayout
                 android:id="@+id/layoutPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -405,7 +515,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="41sp"
-                android:text="New Password"
+                android:text="@string/new_password"
                 android:textAllCaps="true"
                 android:paddingEnd="6dp"
                 android:paddingStart="6dp"
@@ -418,18 +528,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <CheckBox
-            android:id="@+id/terms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
-            android:layout_marginStart="30sp"
-            android:checked="false"
-            android:clickable="true"
-            android:textStyle="bold"
-            android:layout_gravity="start"
-            android:text="By checking,you are terms and condition"
-            />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"

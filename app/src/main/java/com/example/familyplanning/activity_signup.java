@@ -1,5 +1,8 @@
 package com.example.familyplanning;
 
+import static com.example.familyplanning.R.id;
+import static com.example.familyplanning.R.layout;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,10 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,49 +39,46 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class activity_signup extends AppCompatActivity {
-    private ImageView img;
-    private EditText fullName, textNumber,textPhone,Email,textPwd,cfPwd,textDob;
+    private EditText fullName, textNumber,textPhone,Email,textSector,textCell,textPwd,cfPwd,textDob;
     private CheckBox terms;
-    private RadioGroup radioGroup;
-    private Button btnCreate;
     private ProgressBar progress_bar;
     private DatabaseReference reff;
     private FirebaseAuth userAuth;
     private String token;
-    private final String regrex="^07[2,3,8,9]{1}\\d{7}$";
-    private final String flnReg="/^[a-zA-Z\\s]+$/";
-//    private final String regrexId="^1[2,3,8,9]{1}\\d{7}$";
-
-
-    Users users;
+    private final String regrex= "^07[2,389]\\d{7}$";
+    private final String flnReg= "^[a-zA-Z\\s]+$";
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-
-
+        setContentView(layout.activity_signup);
         //back space
-        img=findViewById(R.id.backImg);
+        ImageView img = findViewById(id.backImg);
         img.setOnClickListener(view -> onBackPressed());
         //get variables from xml
-        fullName=findViewById(R.id.fullName);
-        textNumber=findViewById(R.id.textidNumber);
-        textPhone=findViewById(R.id.textPhoneNumber);
-        Email=findViewById(R.id.Email);
-        textPwd=findViewById(R.id.textPassword);
-        cfPwd=findViewById(R.id.textcfPassword);
-        textDob=findViewById(R.id.textDob);
+        fullName=findViewById(id.fullName);
+        textNumber=findViewById(id.textidNumber);
+        textPhone=findViewById(id.textPhoneNumber);
+        Email=findViewById(id.Email);
+        textSector=findViewById(id.textSector);
+        textCell=findViewById(id.textCell);
+        textPwd=findViewById(id.textPassword);
+        cfPwd=findViewById(id.textcfPassword);
+        textDob=findViewById(id.textDob);
         //get button
-        btnCreate=findViewById(R.id.btnCreate);
+        Button btnCreate = findViewById(id.btnCreate);
         //progress bar
-        progress_bar=findViewById(R.id.progress_bar);
+        progress_bar=findViewById(id.progress_bar);
 
         //check box
 
-        terms=findViewById(R.id.terms);
+        terms=findViewById(id.terms);
+
 
         Log.d("MyLog","DEVICE TOKEN  is"+ FirebaseInstanceId.getInstance().getToken());
         token=FirebaseInstanceId.getInstance().getToken();
@@ -103,15 +100,15 @@ public class activity_signup extends AppCompatActivity {
 //        });
 
         //radio button group
-        radioGroup=findViewById(R.id.rbtnGender);
-        RadioButton genderBtn=(RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
+        RadioGroup radioGroup1 = findViewById(id.rbtnGender);
+        RadioButton genderBtn= findViewById(radioGroup1.getCheckedRadioButtonId());
         final String[] gender = {genderBtn.getText().toString()};
-        radioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
+        radioGroup1.setOnCheckedChangeListener((radioGroup, i) -> {
             switch (i){
-                case R.id.rbtnMale:
+                case id.rbtnMale:
                     gender[0] = "Male";
                     break;
-                case R.id.rbtnFemale:
+                case id.rbtnFemale:
                     gender[0] = "Female";
                     break;
             }
@@ -130,6 +127,8 @@ public class activity_signup extends AppCompatActivity {
             String password=textPwd.getText().toString().trim();
             String dob=textDob.getText().toString().trim();
             String idno=textNumber.getText().toString().trim();
+            String sector=textSector.getText().toString().trim();
+            String cell=textCell.getText().toString().trim();
             String iphone=textPhone.getText().toString().trim();
             String cp=cfPwd.getText().toString().trim();
             System.out.println("your dob is"+dob);
@@ -145,7 +144,7 @@ public class activity_signup extends AppCompatActivity {
                 return;
             }
             if(!fuln.matches(flnReg)){
-                fullName.setError("Names should not contain only letter!");
+                fullName.setError("Names should not contain  number, only letters allowed!");
                 fullName.requestFocus();
                 return;
             }
@@ -202,6 +201,16 @@ public class activity_signup extends AppCompatActivity {
                 Email.requestFocus();
                 return;
             }
+            if (sector.isEmpty()) {
+                textSector.setError("Sector is required");
+                textSector.requestFocus();
+                return;
+            }
+            if (cell.isEmpty()) {
+                textCell.setError("Cell is required");
+                textCell.requestFocus();
+                return;
+            }
 
             if (password.isEmpty()) {
                 textPwd.setError("password  is required");
@@ -228,16 +237,20 @@ public class activity_signup extends AppCompatActivity {
                 snackbar.setBackgroundTint(Color.RED);
                 snackbar.show();
             }
+            if (!terms.isChecked()) {
+                Snackbar snackbar = Snackbar.make(view, "Whoops,Error you must agree terms and conditions", Snackbar.LENGTH_LONG);
+                snackbar.setBackgroundTint(Color.RED);
+                snackbar.show();
+            }
 
 
-
-            progress_bar.setVisibility(view.VISIBLE);
+            progress_bar.setVisibility(View.VISIBLE);
             reff = FirebaseDatabase.getInstance().getReference().child("UserAccounts");
 
             reff.orderByChild("idno").equalTo(idno).addValueEventListener(new ValueEventListener(){
 
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 //id number exists in Database
                                 fullName.setText("");
@@ -245,51 +258,52 @@ public class activity_signup extends AppCompatActivity {
                                 textPhone.setText("");
                                 Email.setText("");
                                 textPwd.setText("");
+                                textCell.setText("");
+                                textSector.setText("");
                                 cfPwd.setText("");
                                 textDob.setText("");
                                 Snackbar snackbar = Snackbar.make(view, "Whoops,Error id number Already exist", Snackbar.LENGTH_LONG);
                                 snackbar.setBackgroundTint(Color.RED);
                                 snackbar.show();
-                                progress_bar.setVisibility(view.GONE);
+                                progress_bar.setVisibility(View.GONE);
                             } else {
 
                                 //account does not exist
                                 userAuth.createUserWithEmailAndPassword(email,password)
-                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if(task.isSuccessful()){
-                                                    Users user=new Users(fuln,idno,iphone,email,password,dob,gender[0],token);
-                                                    //firebase database connection
-                                                    reff= FirebaseDatabase.getInstance().getReference("UserAccounts");
-                                                    reff.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .setValue(user).addOnCompleteListener(task1 -> {
-                                                                if(task1.isSuccessful()){
+                                        .addOnCompleteListener(task -> {
+                                            if(task.isSuccessful()){
+                                                Users user=new Users(fuln,idno,iphone,email,password,sector,cell,dob,gender[0],token);
+                                                //firebase database connection
+                                                reff= FirebaseDatabase.getInstance().getReference("UserAccounts");
+                                                reff.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                                                        .setValue(user).addOnCompleteListener(task1 -> {
+                                                            if(task1.isSuccessful()){
+                                                                startActivity(new Intent(getApplicationContext(), activity_login.class));
+                                                                // Toast.makeText(activity_signup.this, new StringBuilder().append("Thank you for creating account").append(fullName).toString(),Toast.LENGTH_LONG).show();
+                                                                Snackbar snackbar = Snackbar.make(view, "Thank you for creating account!", Snackbar.LENGTH_LONG);
+                                                                snackbar.setBackgroundTint(Color.GREEN);
+                                                                snackbar.show();
 
-                                                                    // Toast.makeText(activity_signup.this, new StringBuilder().append("Thank you for creating account").append(fullName).toString(),Toast.LENGTH_LONG).show();
-                                                                    Snackbar snackbar = Snackbar.make(view, "Thank you for creating account!", Snackbar.LENGTH_LONG);
-                                                                    snackbar.setBackgroundTint(Color.GREEN);
-                                                                    snackbar.show();
-                                                                    startActivity(new Intent(getApplicationContext(), activity_login.class));
-                                                                }
-                                                                else{
-                                                                    fullName.setText("");
-                                                                    textNumber.setText("");
-                                                                    textPhone.setText("");
-                                                                    Email.setText("");
-                                                                    textPwd.setText("");
-                                                                    cfPwd.setText("");
-                                                                    textDob.setText("");
-                                                                    //Toast.makeText(activity_signup.this, new StringBuilder().append("Whoops,Error while creating account,try again "),Toast.LENGTH_LONG).show();
-                                                                    Snackbar snackbar = Snackbar.make(view, "Whoops,Error while creating account,try again", Snackbar.LENGTH_LONG);
-                                                                    snackbar.setBackgroundTint(Color.RED);
-                                                                    snackbar.show();
-                                                                    progress_bar.setVisibility(view.GONE);
-                                                                }
-                                                            });
-                                                }
-
+                                                            }
+                                                            else{
+                                                                fullName.setText("");
+                                                                textNumber.setText("");
+                                                                textPhone.setText("");
+                                                                Email.setText("");
+                                                                textPwd.setText("");
+                                                                cfPwd.setText("");
+                                                                textSector.setText("");
+                                                                textCell.setText("");
+                                                                textDob.setText("");
+                                                                //Toast.makeText(activity_signup.this, new StringBuilder().append("Whoops,Error while creating account,try again "),Toast.LENGTH_LONG).show();
+                                                                Snackbar snackbar = Snackbar.make(view, "Whoops,Error while creating account,try again", Snackbar.LENGTH_LONG);
+                                                                snackbar.setBackgroundTint(Color.RED);
+                                                                snackbar.show();
+                                                                progress_bar.setVisibility(View.GONE);
+                                                            }
+                                                        });
                                             }
+
                                         });
                             }
 

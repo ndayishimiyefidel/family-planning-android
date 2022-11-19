@@ -10,13 +10,17 @@ public class SelectMethod {
     private String Uenddate;
     private String duration;
     private String status;
+    private String sector;
+    private  String cell;
+    private  String dob;
     private String token;
+    private String gender;
 
 
     public SelectMethod() {
     }
 
-    public SelectMethod(String userName, String userEmail, String userNid, String userPhone, String ufpmethod, String ustartdate, String uenddate, String duration, String status, String token) {
+    public SelectMethod(String userName, String userEmail, String userNid, String userPhone, String ufpmethod, String ustartdate, String uenddate, String duration, String status, String sector, String cell, String dob, String token, String gender) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userNid = userNid;
@@ -26,7 +30,11 @@ public class SelectMethod {
         Uenddate = uenddate;
         this.duration = duration;
         this.status = status;
+        this.sector = sector;
+        this.cell = cell;
+        this.dob = dob;
         this.token = token;
+        this.gender = gender;
     }
 
     public String getUserName() {
@@ -101,11 +109,43 @@ public class SelectMethod {
         this.status = status;
     }
 
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
